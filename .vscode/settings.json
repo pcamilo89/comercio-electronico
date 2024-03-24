@@ -1,0 +1,11 @@
+{
+  "editor.linkedEditing": true,
+  "editor.tabSize": 2,
+  "git.inputValidation": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
