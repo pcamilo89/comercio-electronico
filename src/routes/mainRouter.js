@@ -5,6 +5,10 @@ const express = require('express')
  */
 const mainRouter = express.Router()
 
+const { authRouter } = require('./auth')
+
+mainRouter.use('/api/auth', authRouter)
+
 const { ResponseMessage } = require('../utils/message')
 const { HttpError } = require('../errors/HttpError')
 
