@@ -12,7 +12,7 @@ const { HttpError } = require('./errors/HttpError')
 
 /**
  * Load libraries, plugins, routes and general middleware and start listening for requests.
- * @param {string} port - Port to listen to incoming request.
+ * @param {number} port - Port to listen to incoming request.
  */
 function startServer(port) {
   console.log('Starting Server.')
