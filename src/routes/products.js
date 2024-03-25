@@ -4,14 +4,18 @@ const express = require('express')
  * @module productsRouter
  */
 const productsRouter = express.Router()
+const {
+  createProduct,
+  getProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct
+} = require('../controllers/products')
 
-const { ResponseMessage } = require('../utils/message')
-
-productsRouter.get('/', async (req, res) => {
-  const message = new ResponseMessage({
-    message: 'This is the products route.'
-  })
-  res.send(message)
-})
+productsRouter.post('/', createProduct)
+productsRouter.get('/', getProducts)
+productsRouter.get('/:id', getProductById)
+productsRouter.patch('/:id', updateProduct)
+productsRouter.delete('/:id', deleteProduct)
 
 module.exports = { productsRouter }
