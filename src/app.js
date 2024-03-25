@@ -3,12 +3,10 @@ const app = express()
 const cors = require('cors')
 require('express-async-errors')
 
-const { connectToDB } = require('./utils/database')
 const { DATABASE_URL } = require('./utils/constants')
-
-const { ResponseMessage } = require('./utils/message')
+const { connectToDB } = require('./utils/database')
+const { mainRouter } = require('./routes/mainRouter')
 const { errorHandler } = require('./middlewares/errorHandling')
-const { HttpError } = require('./errors/HttpError')
 
 /**
  * Load libraries, plugins, routes and general middleware and start listening for requests.
@@ -21,15 +19,7 @@ function startServer(port) {
 
   connectToDB(DATABASE_URL)
 
-  app.get('/', async (req, res) => {
-    const message = new ResponseMessage({ message: 'The server is working.' })
-    res.send(message)
-  })
-
-  app.get('/error', async (req, res) => {
-    throw new HttpError({ message: 'Test HTTP error is working.' })
-  })
-
+  app.use(mainRouter)
   app.use(errorHandler)
 
   app.listen(port)
