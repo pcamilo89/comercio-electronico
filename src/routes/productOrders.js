@@ -5,13 +5,20 @@ const express = require('express')
  */
 const productOrdersRouter = express.Router()
 
-const { ResponseMessage } = require('../utils/message')
+const {
+  createProductOrder,
+  getProductOrders,
+  getProductOrdersByUser,
+  getProductOrderById,
+  updateProductOrder,
+  deleteProductOrder
+} = require('../controllers/productOrders')
 
-productOrdersRouter.get('/', async (req, res) => {
-  const message = new ResponseMessage({
-    message: 'This is the product orders route.'
-  })
-  res.send(message)
-})
+productOrdersRouter.post('/', createProductOrder)
+productOrdersRouter.get('/', getProductOrders)
+productOrdersRouter.get('/:user', getProductOrdersByUser)
+productOrdersRouter.get('/:id', getProductOrderById)
+productOrdersRouter.patch('/:id', updateProductOrder)
+productOrdersRouter.delete('/:id', deleteProductOrder)
 
 module.exports = { productOrdersRouter }
