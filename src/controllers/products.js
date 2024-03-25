@@ -13,7 +13,7 @@ async function createProduct(req, res) {
 }
 
 /**
- * Get the product list.
+ * Get the products list.
  * @param {Request} req - Request object.
  * @param {Response} res - Response object.
  */
