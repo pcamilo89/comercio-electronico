@@ -7,9 +7,11 @@ const mainRouter = express.Router()
 
 const { authRouter } = require('./auth')
 const { productsRouter } = require('./products')
+const { productOrdersRouter } = require('./productOrders')
 
 mainRouter.use('/api/auth', authRouter)
 mainRouter.use('/api/products', productsRouter)
+mainRouter.use('/api/productorders', productOrdersRouter)
 
 const { ResponseMessage } = require('../utils/message')
 const { HttpError } = require('../errors/HttpError')
