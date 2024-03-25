@@ -4,12 +4,9 @@ const express = require('express')
  * @module authRouter
  */
 const authRouter = express.Router()
+const { register, login } = require('../controllers/auth')
 
-const { ResponseMessage } = require('../utils/message')
-
-authRouter.get('/', async (req, res) => {
-  const message = new ResponseMessage({ message: 'This is the auth route.' })
-  res.send(message)
-})
+authRouter.get('/register', register)
+authRouter.get('/login', login)
 
 module.exports = { authRouter }
