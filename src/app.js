@@ -5,6 +5,8 @@ const cors = require('cors')
 const { connectToDB } = require('./utils/database')
 const { DATABASE_URL } = require('./utils/constants')
 
+const { ResponseMessage } = require('./utils/message')
+
 /**
  * Load libraries, plugins, routes and general middleware and start listening for requests.
  * @param {string} port - Port to listen to incoming request.
@@ -16,8 +18,11 @@ function startServer(port) {
 
   connectToDB(DATABASE_URL)
 
-  app.get('/', (req, res) => {
-    res.send({ message: 'The server is up.' })
+  app.get('/', async (req, res) => {
+    const message = new ResponseMessage({ message: 'The server is working.' })
+    res.send(message)
+  })
+
   })
 
   app.listen(port)
