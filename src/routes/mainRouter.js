@@ -11,7 +11,7 @@ const { productOrdersRouter } = require('./productOrders')
 
 mainRouter.use('/api/auth', authRouter)
 mainRouter.use('/api/products', productsRouter)
-mainRouter.use('/api/productorders', productOrdersRouter)
+mainRouter.use('/api/product-orders', productOrdersRouter)
 
 const { ResponseMessage } = require('../utils/message')
 const { HttpError } = require('../errors/HttpError')
