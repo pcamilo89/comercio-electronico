@@ -1,6 +1,6 @@
 const express = require('express')
 /**
- * Main router to manage diferent children routes.
+ * Main router to manage diferent children routes, and middleware.
  * @module mainRouter
  */
 const mainRouter = express.Router()
