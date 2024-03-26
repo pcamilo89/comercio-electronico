@@ -6,7 +6,6 @@ require('express-async-errors')
 const { DATABASE_URL } = require('./utils/constants')
 const { connectToDB } = require('./utils/database')
 const { mainRouter } = require('./routes/mainRouter')
-const { errorHandler } = require('./middlewares/errorHandling')
 
 /**
  * Load libraries, plugins, routes and general middleware and start listening for requests.
@@ -18,10 +17,7 @@ function startServer(port) {
   app.use(express.json())
 
   connectToDB(DATABASE_URL)
-
   app.use(mainRouter)
-  app.use(errorHandler)
-
   app.listen(port)
 }
 

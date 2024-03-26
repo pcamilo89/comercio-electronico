@@ -9,6 +9,8 @@ const { authRouter } = require('./auth')
 const { productsRouter } = require('./products')
 const { productOrdersRouter } = require('./productOrders')
 
+const { errorHandler } = require('../middlewares/errorHandler')
+
 mainRouter.use('/api/auth', authRouter)
 mainRouter.use('/api/products', productsRouter)
 mainRouter.use('/api/product-orders', productOrdersRouter)
@@ -24,5 +26,7 @@ mainRouter.get('/api', async (req, res) => {
 mainRouter.get('/api/error', async (req, res) => {
   throw new HttpError({ message: 'Test HTTP error is working.' })
 })
+
+mainRouter.use(errorHandler)
 
 module.exports = { mainRouter }
