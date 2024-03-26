@@ -6,7 +6,7 @@ class ResponseMessage {
    * @param {string} [data.message] - String with information to be send.
    * @param {string} [data.status] - Status of the response.
    */
-  constructor({ message = undefined, status = 'ok' }) {
+  constructor({ message = undefined, status = 'ok' } = {}) {
     this.message = message
     this.timestamp = new Date().toISOString()
     this.status = status

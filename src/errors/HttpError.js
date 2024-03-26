@@ -11,7 +11,7 @@ class HttpError extends Error {
     httpStatusCode = 500,
     message = 'Internal Server Error.',
     hasStack = false
-  }) {
+  } = {}) {
     super(message)
     this.name = 'HttpError'
     this.httpStatusCode = httpStatusCode
