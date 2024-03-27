@@ -30,7 +30,7 @@ async function register(req, res) {
   if (user) {
     res.send(
       new ResponseMessage({
-        message: `User ${user.username} has been created.`
+        message: `User "${user.username}" has been created.`
       })
     )
   }
