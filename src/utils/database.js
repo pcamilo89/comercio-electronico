@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const { connect } = require('mongoose')
 
 /**
  * Function to stablish a conection with the database.
@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
  */
 async function connectToDB(dbUrl) {
   try {
-    await mongoose.connect(dbUrl)
+    await connect(dbUrl)
     console.log('Connected to DB.')
   } catch (error) {
     console.error(error)
