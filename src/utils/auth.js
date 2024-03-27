@@ -1,6 +1,6 @@
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { HttpError } = require('../errors/HttpError')
+const { AuthError } = require('../errors/AuthError')
 
 /**
  * Hash password with salt.
@@ -45,12 +45,12 @@ function verifyJWT(tokenString) {
     return jwt.verify(tokenString, process.env.JWT_TOKEN_SECRET)
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      throw new HttpError({
+      throw new AuthError({
         httpStatusCode: 401,
         message: 'Access denied, access token has expired.'
       })
     } else {
-      throw new HttpError({
+      throw new AuthError({
         httpStatusCode: 401,
         message: 'Access denied, access token validation failed.'
       })
@@ -65,7 +65,7 @@ function verifyJWT(tokenString) {
  */
 function hasJWT(header) {
   if (!header?.startsWith('Bearer ')) {
-    throw new HttpError({
+    throw new AuthError({
       httpStatusCode: 400,
       message: 'Access denied, access token not found.'
     })

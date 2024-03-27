@@ -1,4 +1,4 @@
-const { HttpError } = require('../errors/HttpError')
+const { AuthError } = require('../errors/AuthError')
 const { findOneUser } = require('../services/user')
 const { hasJWT, verifyJWT } = require('../utils/auth')
 
@@ -16,7 +16,7 @@ async function authHandler(req, res, next) {
   const { username } = req.user
   const user = await findOneUser({ username })
   if (!user) {
-    throw new HttpError({
+    throw new AuthError({
       httpStatusCode: 401,
       message: 'Access denied, access token validation failed.'
     })

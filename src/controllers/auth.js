@@ -1,4 +1,4 @@
-const { HttpError } = require('../errors/HttpError')
+const { AuthError } = require('../errors/AuthError')
 const { ResponseMessage } = require('../utils/message')
 const { hashPassword, comparePasswords, createJWT } = require('../utils/auth')
 const { findOneUser, createOneUser } = require('../services/user')
@@ -14,12 +14,12 @@ async function register(req, res) {
 
   const { error } = registerValidation({ username, password, email })
   if (error) {
-    throw new HttpError({ httpStatusCode: 400, message: error.message })
+    throw new AuthError({ httpStatusCode: 400, message: error.message })
   }
 
   const result = await findOneUser({ $or: [{ username }, { email }] })
   if (result) {
-    throw new HttpError({
+    throw new AuthError({
       httpStatusCode: 400,
       message: 'Username or Email aready exists.'
     })
@@ -46,12 +46,12 @@ async function login(req, res) {
 
   const { error } = loginValidation({ username, password })
   if (error) {
-    throw new HttpError({ httpStatusCode: 400, message: error.message })
+    throw new AuthError({ httpStatusCode: 400, message: error.message })
   }
 
   const user = await findOneUser({ username })
   if (!user) {
-    throw new HttpError({
+    throw new AuthError({
       httpStatusCode: 400,
       message: "Username and password don't match, please try again."
     })
@@ -59,7 +59,7 @@ async function login(req, res) {
 
   const match = await comparePasswords(password, user.password)
   if (!match) {
-    throw new HttpError({
+    throw new AuthError({
       httpStatusCode: 400,
       message: "Username and password don't match, please try again."
     })
