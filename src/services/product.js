@@ -29,22 +29,26 @@ async function findOneProduct(data, filter = undefined) {
 }
 
 /**
- * Search products with the provided information in the database.
- * @param {Object} data - Find by any atribute of product or a combination.
- * @param {Object} [filter=undefined] - Filter any atribute of product or a combination.
- * @returns {Object} List of products if successful.
+ * Search all products with the provided information in the database.
+ * @param {{ data?: object; filter?: object; limit?: number; page?: number; }} object
+ * @param {object} [object.data] - Filter search by any parameter specified or a combination.
+ * @param {object} [object.filter=undefined] - Filter out any atribute specified or a combination.
+ * @param {number} [object.limit] - Limit amount of results to be returned, default is 10.
+ * @param {number} [object.page] - Page to be returned, default is 1.
+ * @returns {Promise<object>}
  */
-async function findProducts(data, filter = undefined) {
-  return await Product.find(data, filter)
+async function findProducts({ data, filter = undefined, limit, page }) {
+  const skip = (page - 1) * limit
+  return await Product.find(data, filter).limit(limit).skip(skip)
 }
 
 /**
  * Count products with the provided information in the database.
- * @param {Object} data - Find by any atribute of product or a combination.
- * @returns {Object} List of products if successful.
+ * @param {object} data - Find by any atribute of product or a combination.
+ * @returns {object} List of products if successful.
  */
 async function countProducts(data) {
-  return await Product.find(data)
+  return await Product.countDocuments(data)
 }
 
 module.exports = {
