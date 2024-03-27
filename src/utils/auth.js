@@ -10,6 +10,18 @@ async function hashPassword(password) {
   return await bcryptjs.hash(password, salt)
 }
 
+/**
+ * Compare password and hashedPassword.
+ * @param {string} password - Password to hash.
+ * @param {string} hashedPassword - Hashed Password.
+ * @returns {boolean} True if matching.
+ */
+async function comparePasswords(password, hashedPassword) {
+  return await bcryptjs.compare(password, hashedPassword)
+}
+
+
 module.exports = {
   hashPassword,
+  comparePasswords,
 }
