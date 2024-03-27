@@ -1,4 +1,8 @@
+const { HttpError } = require('../errors/HttpError')
 const { ResponseMessage } = require('../utils/message')
+const { hashPassword, comparePasswords, createJWT } = require('../utils/auth')
+const { findOneUser, createOneUser } = require('../services/user')
+const { registerValidation, loginValidation } = require('../validators/auth')
 
 /**
  * Register user with provided information.
@@ -38,8 +42,33 @@ async function register(req, res) {
  * @param {Response} res - Response object.
  */
 async function login(req, res) {
-  const message = new ResponseMessage({ message: 'This is the login route.' })
-  res.send(message)
+  const { username, password } = req.body
+
+  const { error } = loginValidation({ username, password })
+  if (error) {
+    throw new HttpError({ httpStatusCode: 400, message: error.message })
+  }
+
+  const user = await findOneUser({ username })
+  if (!user) {
+    throw new HttpError({
+      httpStatusCode: 400,
+      message: "Username and password don't match, please try again."
+    })
+  }
+
+  const match = await comparePasswords(password, user.password)
+  if (!match) {
+    throw new HttpError({
+      httpStatusCode: 400,
+      message: "Username and password don't match, please try again."
+    })
+  }
+
+  const { _id } = user
+  const response = new ResponseMessage({ message: 'Login was successful.' })
+  response.token = createJWT({ _id, username })
+  res.send(response)
 }
 
 module.exports = { register, login }
