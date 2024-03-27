@@ -18,6 +18,7 @@ mainRouter.use('/api/product-orders', productOrdersRouter)
 
 const { ResponseMessage } = require('../utils/message')
 const { HttpError } = require('../errors/HttpError')
+const { authHandler } = require('../middlewares/authHandler')
 
 mainRouter.get('/api', async (req, res) => {
   const message = new ResponseMessage({ message: 'The server is working.' })
@@ -26,6 +27,13 @@ mainRouter.get('/api', async (req, res) => {
 
 mainRouter.get('/api/error', async (req, res) => {
   throw new HttpError({ message: 'Test HTTP error is working.' })
+})
+
+mainRouter.get('/api/test', authHandler, async (req, res) => {
+  const message = new ResponseMessage({
+    message: 'This is a protected route, access successful.'
+  })
+  res.send(message)
 })
 
 mainRouter.use(notFoundHandler)
