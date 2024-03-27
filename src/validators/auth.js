@@ -17,6 +17,22 @@ function registerValidation({ username, email, password }) {
   return schema.validate({ username, email, password })
 }
 
+/**
+ * Validate fields needed for user login.
+ * @param {{ username: string; password: string; }} data - Object that contains needed fields.
+ * @param {string} data.username - Username.
+ * @param {string} data.password - Password.
+ * @returns {Object} Validation result.
+ */
+function loginValidation({ username, password }) {
+  const schema = Joi.object({
+    username: Joi.string().min(4).required(),
+    password: Joi.string().min(6).required()
+  })
+  return schema.validate({ username, password })
+}
+
 module.exports = {
   registerValidation,
+  loginValidation
 }
