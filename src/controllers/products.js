@@ -1,5 +1,9 @@
 const { ProductError } = require('../errors/ProductError')
-const { createOneProduct, findOneProduct } = require('../services/product')
+const {
+  createOneProduct,
+  findOneProduct,
+  findProducts
+} = require('../services/product')
 const { ResponseMessage } = require('../utils/message')
 const { createProductValidation } = require('../validators/product')
 
@@ -45,9 +49,9 @@ async function createProduct(req, res) {
  * @param {Response} res - Response object.
  */
 async function getProducts(req, res) {
-  const message = new ResponseMessage({
-    message: 'This is the get products route.'
-  })
+  const productList = await findProducts()
+  const message = new ResponseMessage()
+  message.products = productList
   res.send(message)
 }
 
