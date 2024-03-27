@@ -38,8 +38,18 @@ async function findProducts(data, filter = undefined) {
   return await Product.find(data, filter)
 }
 
+/**
+ * Count products with the provided information in the database.
+ * @param {Object} data - Find by any atribute of product or a combination.
+ * @returns {Object} List of products if successful.
+ */
+async function countProducts(data) {
+  return await Product.find(data)
+}
+
 module.exports = {
   createOneProduct,
   findOneProduct,
-  findProducts
+  findProducts,
+  countProducts
 }
