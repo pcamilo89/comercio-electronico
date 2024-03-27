@@ -2,7 +2,8 @@ const { ProductError } = require('../errors/ProductError')
 const {
   createOneProduct,
   findOneProduct,
-  findProducts
+  findProducts,
+  countProducts
 } = require('../services/product')
 const { ResponseMessage } = require('../utils/message')
 const { createProductValidation } = require('../validators/product')
@@ -49,9 +50,27 @@ async function createProduct(req, res) {
  * @param {Response} res - Response object.
  */
 async function getProducts(req, res) {
-  const productList = await findProducts()
+  const { query } = req
+
+  let page = 1
+  if (query.page) {
+    page = query.page
+  }
+
+  let limit = 10
+  if (query.limit) {
+    limit = query.limit
+  }
+
+  const count = await countProducts()
+
+  const productList = await findProducts({ limit, page })
+
   const message = new ResponseMessage()
   message.products = productList
+  message.count = count
+  message.limit = limit
+  message.page = page
   res.send(message)
 }
 
