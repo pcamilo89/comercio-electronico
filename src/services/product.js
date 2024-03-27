@@ -28,7 +28,18 @@ async function findOneProduct(data, filter = undefined) {
   return await Product.findOne(data, filter)
 }
 
+/**
+ * Search products with the provided information in the database.
+ * @param {Object} data - Find by any atribute of user or a combination.
+ * @param {Object} [filter=undefined] - Filter any atribute of user or a combination.
+ * @returns {Object} List of products if successful.
+ */
+async function findProducts(data, filter = undefined) {
+  return await Product.find(data, filter)
+}
+
 module.exports = {
   createOneProduct,
-  findOneProduct
+  findOneProduct,
+  findProducts
 }
