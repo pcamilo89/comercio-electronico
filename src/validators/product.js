@@ -2,12 +2,12 @@ const Joi = require('joi')
 
 /**
  * Validate fields needed to add a product.
- * @param {{ name: string; description: string; price: number; quantity: number; }} data - Object that contains needed fields.
- * @param {string} data.name - Product name.
- * @param {string} data.description - Product description.
- * @param {number} data.price - Product price.
- * @param {number} data.quantity - Product quantity avaiable in stock.
- * @returns {Object} Validation result.
+ * @param {{ name: string; description: string; price: number; quantity: number; }} object - Object that contains needed fields.
+ * @param {string} object.name - Product name.
+ * @param {string} object.description - Product description.
+ * @param {number} object.price - Product price.
+ * @param {number} object.quantity - Product quantity avaiable in stock.
+ * @returns {object} Validation result.
  */
 function createProductValidation({ name, description, price, quantity }) {
   const schema = Joi.object({

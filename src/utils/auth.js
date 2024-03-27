@@ -24,9 +24,9 @@ async function comparePasswords(password, hashedPassword) {
 
 /**
  * Create a signed token with the received payload
- * @param {{ _id: string; username: string; }} data - Object with the payload to sign.
- * @param {string} data._id - id of the User.
- * @param {string} data.username - Username.
+ * @param {{ _id: string; username: string; }} object - Object with the payload to sign.
+ * @param {string} object._id - id of the User.
+ * @param {string} object.username - Username.
  * @returns {string} JWT as a string.
  */
 function createJWT({ _id, username }) {

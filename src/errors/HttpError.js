@@ -2,10 +2,10 @@
 class HttpError extends Error {
   /**
    * Creates an HttpError.
-   * @param {{ httpStatusCode?: number; message?: string; hasStack?: boolean; }} data - Information to send in the error message.
-   * @param {number} [data.httpStatusCode] - HTTP Status Code of the error.
-   * @param {string} [data.message] - Error message to send in response.
-   * @param {boolean} [data.hasStack] - Enable stack of the error.
+   * @param {{ httpStatusCode?: number; message?: string; hasStack?: boolean; }} object - Information to send in the error message.
+   * @param {number} [object.httpStatusCode] - HTTP Status Code of the error.
+   * @param {string} [object.message] - Error message to send in response.
+   * @param {boolean} [object.hasStack] - Enable stack of the error.
    */
   constructor({
     httpStatusCode = 500,

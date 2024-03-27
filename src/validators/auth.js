@@ -2,11 +2,11 @@ const Joi = require('joi')
 
 /**
  * Validate fields needed for user registration.
- * @param {{ username: string; email: string; password: string; }} data - Object that contains needed fields.
- * @param {string} data.username - Username.
- * @param {string} data.email - Email.
- * @param {string} data.password - Password.
- * @returns {Object} Validation result.
+ * @param {{ username: string; email: string; password: string; }} object - Object that contains needed fields.
+ * @param {string} object.username - Username.
+ * @param {string} object.email - Email.
+ * @param {string} object.password - Password.
+ * @returns {object} Validation result.
  */
 function registerValidation({ username, email, password }) {
   const schema = Joi.object({
@@ -19,10 +19,10 @@ function registerValidation({ username, email, password }) {
 
 /**
  * Validate fields needed for user login.
- * @param {{ username: string; password: string; }} data - Object that contains needed fields.
- * @param {string} data.username - Username.
- * @param {string} data.password - Password.
- * @returns {Object} Validation result.
+ * @param {{ username: string; password: string; }} object - Object that contains needed fields.
+ * @param {string} object.username - Username.
+ * @param {string} object.password - Password.
+ * @returns {object} Validation result.
  */
 function loginValidation({ username, password }) {
   const schema = Joi.object({

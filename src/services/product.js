@@ -6,7 +6,7 @@ const Product = require('../models/product')
  * @param {string} description - Product description.
  * @param {number} price - Product price.
  * @param {number} quantity - Product quantity avaiable in stock.
- * @returns {Object} Product if successful.
+ * @returns {object} Product if successful.
  */
 async function createOneProduct(name, description, price, quantity) {
   const product = new Product({
@@ -20,9 +20,9 @@ async function createOneProduct(name, description, price, quantity) {
 
 /**
  * Search one product with the provided information in the database.
- * @param {Object} data - Find by any atribute of product or a combination.
- * @param {Object} [filter=undefined] - Filter any atribute of product or a combination.
- * @returns {Object} Product if successful.
+ * @param {object} data - Filter search by any parameter specified or a combination.
+ * @param {object} [filter=undefined] - Filter out any atribute specified or a combination.
+ * @returns {object} Product if successful.
  */
 async function findOneProduct(data, filter = undefined) {
   return await Product.findOne(data, filter)

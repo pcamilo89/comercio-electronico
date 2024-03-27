@@ -5,7 +5,7 @@ const User = require('../models/user')
  * @param {string} username - Username.
  * @param {string} hashedPassword - Hashed password.
  * @param {string} email - Email.
- * @returns {Object} User if successful.
+ * @returns {object} User if successful.
  */
 async function createOneUser(username, hashedPassword, email) {
   const user = new User({
@@ -18,9 +18,9 @@ async function createOneUser(username, hashedPassword, email) {
 
 /**
  * Search one user with the provided information in the database.
- * @param {Object} data - Find by any atribute of user or a combination.
- * @param {Object} [filter=undefined] - Filter any atribute of user or a combination.
- * @returns {Object} User if successful.
+ * @param {object} data - Filter search by any parameter specified or a combination.
+ * @param {object} [filter=undefined] - FFilter out any atribute specified or a combination.
+ * @returns {object} User if successful.
  */
 async function findOneUser(data, filter = undefined) {
   return await User.findOne(data, filter)
