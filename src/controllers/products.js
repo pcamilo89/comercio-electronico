@@ -1,4 +1,7 @@
+const { ProductError } = require('../errors/ProductError')
+const { createOneProduct, findOneProduct } = require('../services/product')
 const { ResponseMessage } = require('../utils/message')
+const { createProductValidation } = require('../validators/product')
 
 /**
  * Create a new product with provided information.
@@ -6,10 +9,34 @@ const { ResponseMessage } = require('../utils/message')
  * @param {Response} res - Response object.
  */
 async function createProduct(req, res) {
-  const message = new ResponseMessage({
-    message: 'This is the create product route.'
+  const { name, description, price, quantity } = req.body
+
+  const { error } = createProductValidation({
+    name,
+    description,
+    price,
+    quantity
   })
-  res.send(message)
+  if (error) {
+    throw new ProductError({ httpStatusCode: 400, message: error.message })
+  }
+
+  const result = await findOneProduct({ name })
+  if (result) {
+    throw new ProductError({
+      httpStatusCode: 400,
+      message: 'Product already exists.'
+    })
+  }
+
+  const product = await createOneProduct(name, description, price, quantity)
+  if (product) {
+    res.send(
+      new ResponseMessage({
+        message: `Product "${product.name}" has been created.`
+      })
+    )
+  }
 }
 
 /**
