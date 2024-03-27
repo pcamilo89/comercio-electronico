@@ -9,12 +9,12 @@ const productSchema = Schema({
     type: String,
     required: true,
     unique: true,
-    minLength: 50
+    maxLength: 50
   },
   description: {
     type: String,
     required: true,
-    minLength: 100
+    maxLength: 100
   },
   price: {
     type: Number,
