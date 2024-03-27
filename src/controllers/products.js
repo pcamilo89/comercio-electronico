@@ -57,9 +57,18 @@ async function getProducts(req, res) {
  * @param {Response} res - Response object.
  */
 async function getProductById(req, res) {
-  const message = new ResponseMessage({
-    message: 'This is the get product by Id route.'
-  })
+  const { id } = req.params
+
+  const product = await findOneProduct({ _id: id })
+  if (!product) {
+    throw new ProductError({
+      httpStatusCode: 400,
+      message: "Product doesn't exist."
+    })
+  }
+
+  const message = new ResponseMessage()
+  message.product = product
   res.send(message)
 }
 
