@@ -1,4 +1,6 @@
 const bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const { HttpError } = require('../errors/HttpError')
 
 /**
  * Hash password with salt.
@@ -20,8 +22,61 @@ async function comparePasswords(password, hashedPassword) {
   return await bcryptjs.compare(password, hashedPassword)
 }
 
+/**
+ * Create a signed token with the received payload
+ * @param {{ _id: string; username: string; }} data - Object with the payload to sign.
+ * @param {string} data._id - id of the User.
+ * @param {string} data.username - Username.
+ * @returns {string} JWT as a string.
+ */
+function createJWT({ _id, username }) {
+  return jwt.sign({ _id, username }, process.env.JWT_TOKEN_SECRET, {
+    expiresIn: process.env.JWT_TOKEN_TIME
+  })
+}
+
+/**
+ * Verify JWT with the server secret.
+ * @param {string} tokenString - JWT string.
+ * @returns Decoded payload.
+ */
+function verifyJWT(tokenString) {
+  try {
+    return jwt.verify(tokenString, process.env.JWT_TOKEN_SECRET)
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      throw new HttpError({
+        httpStatusCode: 401,
+        message: 'Access denied, access token has expired.'
+      })
+    } else {
+      throw new HttpError({
+        httpStatusCode: 401,
+        message: 'Access denied, access token validation failed.'
+      })
+    }
+  }
+}
+
+/**
+ * Verify if Authorization header has a JWT.
+ * @param {string} header - Authorization header content.
+ * @returns {string} JWT string.
+ */
+function hasJWT(header) {
+  if (!header?.startsWith('Bearer ')) {
+    throw new HttpError({
+      httpStatusCode: 400,
+      message: 'Access denied, access token not found.'
+    })
+  }
+  return header.split(' ')[1]
+}
 
 module.exports = {
   hashPassword,
   comparePasswords,
+  createJWT,
+  hasJWT,
+  verifyJWT
 }
