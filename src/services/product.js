@@ -20,8 +20,8 @@ async function createOneProduct(name, description, price, quantity) {
 
 /**
  * Search one product with the provided information in the database.
- * @param {Object} data - Find by any atribute of user or a combination.
- * @param {Object} [filter=undefined] - Filter any atribute of user or a combination.
+ * @param {Object} data - Find by any atribute of product or a combination.
+ * @param {Object} [filter=undefined] - Filter any atribute of product or a combination.
  * @returns {Object} Product if successful.
  */
 async function findOneProduct(data, filter = undefined) {
@@ -30,8 +30,8 @@ async function findOneProduct(data, filter = undefined) {
 
 /**
  * Search products with the provided information in the database.
- * @param {Object} data - Find by any atribute of user or a combination.
- * @param {Object} [filter=undefined] - Filter any atribute of user or a combination.
+ * @param {Object} data - Find by any atribute of product or a combination.
+ * @param {Object} [filter=undefined] - Filter any atribute of product or a combination.
  * @returns {Object} List of products if successful.
  */
 async function findProducts(data, filter = undefined) {
