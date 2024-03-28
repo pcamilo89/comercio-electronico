@@ -1,5 +1,6 @@
 const Product = require('../models/product')
-
+const { ProductError } = require('../errors/ProductError')
+const { DATABASE_ERROR_CAST } = require('../utils/constants')
 /**
  * Insert one product with the provided information in the database.
  * @param {string} name - Product name.
@@ -25,7 +26,13 @@ async function createOneProduct(name, description, price, quantity) {
  * @returns {object} Product if successful.
  */
 async function findOneProduct(filterBy, filterOut = undefined) {
-  return await Product.findOne(filterBy, filterOut)
+  try {
+    return await Product.findOne(filterBy, filterOut)
+  } catch (CastError) {
+    throw new ProductError({
+      message: DATABASE_ERROR_CAST
+    })
+  }
 }
 
 /**
@@ -39,7 +46,14 @@ async function findOneProduct(filterBy, filterOut = undefined) {
  */
 async function findProducts({ filterBy, filterOut = undefined, limit, page }) {
   const skip = (page - 1) * limit
-  return await Product.find(filterBy, filterOut).limit(limit).skip(skip)
+
+  try {
+    return await Product.find(filterBy, filterOut).limit(limit).skip(skip)
+  } catch (CastError) {
+    throw new ProductError({
+      message: DATABASE_ERROR_CAST
+    })
+  }
 }
 
 /**
@@ -48,7 +62,13 @@ async function findProducts({ filterBy, filterOut = undefined, limit, page }) {
  * @returns {object} List of products if successful.
  */
 async function countProducts(filterBy) {
-  return await Product.countDocuments(filterBy)
+  try {
+    return await Product.countDocuments(filterBy)
+  } catch (CastError) {
+    throw new ProductError({
+      message: DATABASE_ERROR_CAST
+    })
+  }
 }
 
 /**
@@ -58,14 +78,20 @@ async function countProducts(filterBy) {
  * @returns {object} Status of the operation.
  */
 async function updateOneProduct(filterBy, update) {
-  return await Product.updateOne(filterBy, {
-    $set: {
-      name: update.name,
-      description: update.description,
-      price: update.price,
-      quantity: update.quantity
-    }
-  })
+  try {
+    return await Product.updateOne(filterBy, {
+      $set: {
+        name: update.name,
+        description: update.description,
+        price: update.price,
+        quantity: update.quantity
+      }
+    })
+  } catch (CastError) {
+    throw new ProductError({
+      message: DATABASE_ERROR_CAST
+    })
+  }
 }
 
 /**
@@ -74,7 +100,13 @@ async function updateOneProduct(filterBy, update) {
  * @returns {object} Status of the operation.
  */
 async function deleteOneProduct(filterBy) {
-  return await Product.deleteOne(filterBy)
+  try {
+    return await Product.deleteOne(filterBy)
+  } catch (CastError) {
+    throw new ProductError({
+      message: DATABASE_ERROR_CAST
+    })
+  }
 }
 
 module.exports = {
