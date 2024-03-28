@@ -3,10 +3,14 @@ const {
   createOneProduct,
   findOneProduct,
   findProducts,
-  countProducts
+  countProducts,
+  updateOneProduct
 } = require('../services/product')
 const { ResponseMessage } = require('../utils/message')
-const { createProductValidation } = require('../validators/product')
+const {
+  createProductValidation,
+  updateProductValidation
+} = require('../validators/product')
 
 /**
  * Create a new product with provided information.
@@ -101,8 +105,28 @@ async function getProductById(req, res) {
  * @param {Response} res - Response object.
  */
 async function updateProduct(req, res) {
+  const { id } = req.params
+  const { name, description, price, quantity } = req.body
+
+  const { error } = updateProductValidation({
+    name,
+    description,
+    price,
+    quantity
+  })
+  if (error) {
+    throw new ProductError({ httpStatusCode: 400, message: error.message })
+  }
+
+  const { modifiedCount } = await updateOneProduct(
+    { _id: id },
+    { name, description, price, quantity }
+  )
+
   const message = new ResponseMessage({
-    message: 'This is the update product route.'
+    message: modifiedCount
+      ? 'The product with the provided id, was updated.'
+      : 'The product with the provided id, was not updated.'
   })
   res.send(message)
 }
