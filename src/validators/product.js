@@ -11,8 +11,8 @@ const Joi = require('joi')
  */
 function createProductValidation({ name, description, price, quantity }) {
   const schema = Joi.object({
-    name: Joi.string().required(),
-    description: Joi.string().required(),
+    name: Joi.string().min(3).required(),
+    description: Joi.string().min(3).required(),
     price: Joi.number().min(0).required(),
     quantity: Joi.number().min(0).required()
   })
