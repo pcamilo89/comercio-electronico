@@ -20,33 +20,36 @@ async function createOneProduct(name, description, price, quantity) {
 
 /**
  * Search one product with the provided information in the database.
- * @param {object} data - Filter search by any parameter specified or a combination.
- * @param {object} [filter=undefined] - Filter out any atribute specified or a combination.
+ * @param {object} filterBy - Filter search by any parameter specified or a combination.
+ * @param {object} [filterOut=undefined] - Filter out any parameter specified or a combination.
  * @returns {object} Product if successful.
  */
-async function findOneProduct(data, filter = undefined) {
-  return await Product.findOne(data, filter)
+async function findOneProduct(filterBy, filterOut = undefined) {
+  return await Product.findOne(filterBy, filterOut)
 }
 
 /**
  * Search all products with the provided information in the database.
- * @param {{ data?: object; filter?: object; limit?: number; page?: number; }} object
- * @param {object} [object.data] - Filter search by any parameter specified or a combination.
- * @param {object} [object.filter=undefined] - Filter out any atribute specified or a combination.
+ * @param {{ filterBy?: object; filterOut?: object; limit?: number; page?: number; }} object
+ * @param {object} [object.filterBy] - Filter search by any parameter specified or a combination.
+ * @param {object} [object.filterOut=undefined] - Filter out any parameter specified or a combination.
  * @param {number} [object.limit] - Limit amount of results to be returned, default is 10.
  * @param {number} [object.page] - Page to be returned, default is 1.
  * @returns {Promise<object>}
  */
-async function findProducts({ data, filter = undefined, limit, page }) {
+async function findProducts({ filterBy, filterOut = undefined, limit, page }) {
   const skip = (page - 1) * limit
-  return await Product.find(data, filter).limit(limit).skip(skip)
+  return await Product.find(filterBy, filterOut).limit(limit).skip(skip)
 }
 
 /**
  * Count products with the provided information in the database.
- * @param {object} data - Find by any atribute of product or a combination.
+ * @param {object} filterBy - Find by any parameter of product or a combination.
  * @returns {object} List of products if successful.
  */
+async function countProducts(filterBy) {
+  return await Product.countDocuments(filterBy)
+}
 
 /**
  * Update one product with the provided information  in the database.
