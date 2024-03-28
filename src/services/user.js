@@ -18,12 +18,12 @@ async function createOneUser(username, hashedPassword, email) {
 
 /**
  * Search one user with the provided information in the database.
- * @param {object} data - Filter search by any parameter specified or a combination.
- * @param {object} [filter=undefined] - FFilter out any atribute specified or a combination.
+ * @param {object} filterBy - Filter search by any parameter specified or a combination.
+ * @param {object} [filterOut=undefined] - Filter out any parameter specified or a combination.
  * @returns {object} User if successful.
  */
-async function findOneUser(data, filter = undefined) {
-  return await User.findOne(data, filter)
+async function findOneUser(filterBy, filterOut = undefined) {
+  return await User.findOne(filterBy, filterOut)
 }
 
 module.exports = { createOneUser, findOneUser }
