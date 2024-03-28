@@ -47,13 +47,28 @@ async function findProducts({ data, filter = undefined, limit, page }) {
  * @param {object} data - Find by any atribute of product or a combination.
  * @returns {object} List of products if successful.
  */
-async function countProducts(data) {
-  return await Product.countDocuments(data)
+
+/**
+ * Update one product with the provided information  in the database.
+ * @param {object} filterBy - Find by any parameter of product or a combination.
+ * @param {object} update - Update information.
+ * @returns {object} Status of the operation.
+ */
+async function updateOneProduct(filterBy, update) {
+  return await Product.updateOne(filterBy, {
+    $set: {
+      name: update.name,
+      description: update.description,
+      price: update.price,
+      quantity: update.quantity
+    }
+  })
 }
 
 module.exports = {
   createOneProduct,
   findOneProduct,
   findProducts,
-  countProducts
+  countProducts,
+  updateOneProduct
 }
