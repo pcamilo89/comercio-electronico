@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const { AuthError } = require('../errors/AuthError')
-const { DATABASE_ERROR_CAST } = require('../utils/constants')
+const { DATABASE_ERROR } = require('../utils/constants')
 
 /**
  * Insert one user with the provided information in the database.
@@ -29,7 +29,7 @@ async function findOneUser(filterBy, filterOut = undefined) {
     return await User.findOne(filterBy, filterOut)
   } catch (CastError) {
     throw new AuthError({
-      message: DATABASE_ERROR_CAST
+      message: DATABASE_ERROR.CAST_ERROR
     })
   }
 }

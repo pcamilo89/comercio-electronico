@@ -1,6 +1,6 @@
 const Product = require('../models/product')
 const { ProductError } = require('../errors/ProductError')
-const { DATABASE_ERROR_CAST } = require('../utils/constants')
+const { DATABASE_ERROR } = require('../utils/constants')
 /**
  * Insert one product with the provided information in the database.
  * @param {string} name - Product name.
@@ -30,7 +30,7 @@ async function findOneProduct(filterBy, filterOut = undefined) {
     return await Product.findOne(filterBy, filterOut)
   } catch (CastError) {
     throw new ProductError({
-      message: DATABASE_ERROR_CAST
+      message: DATABASE_ERROR.CAST_ERROR
     })
   }
 }
@@ -51,7 +51,7 @@ async function findProducts({ filterBy, filterOut = undefined, limit, page }) {
     return await Product.find(filterBy, filterOut).limit(limit).skip(skip)
   } catch (CastError) {
     throw new ProductError({
-      message: DATABASE_ERROR_CAST
+      message: DATABASE_ERROR.CAST_ERROR
     })
   }
 }
@@ -66,7 +66,7 @@ async function countProducts(filterBy) {
     return await Product.countDocuments(filterBy)
   } catch (CastError) {
     throw new ProductError({
-      message: DATABASE_ERROR_CAST
+      message: DATABASE_ERROR.CAST_ERROR
     })
   }
 }
@@ -89,7 +89,7 @@ async function updateOneProduct(filterBy, update) {
     })
   } catch (CastError) {
     throw new ProductError({
-      message: DATABASE_ERROR_CAST
+      message: DATABASE_ERROR.CAST_ERROR
     })
   }
 }
@@ -104,7 +104,7 @@ async function deleteOneProduct(filterBy) {
     return await Product.deleteOne(filterBy)
   } catch (CastError) {
     throw new ProductError({
-      message: DATABASE_ERROR_CAST
+      message: DATABASE_ERROR.CAST_ERROR
     })
   }
 }
