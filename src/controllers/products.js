@@ -50,6 +50,7 @@ async function createProduct(req, res) {
 
 /**
  * Get the products list.
+ * TODO: add limit to constants or env
  * @param {Request} req - Request object.
  * @param {Response} res - Response object.
  */
