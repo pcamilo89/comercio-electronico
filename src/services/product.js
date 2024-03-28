@@ -68,10 +68,20 @@ async function updateOneProduct(filterBy, update) {
   })
 }
 
+/**
+ * Delete one product with the provided information in the database.
+ * @param {object} filterBy - Find by any parameter of product or a combination.
+ * @returns {object} Status of the operation.
+ */
+async function deleteOneProduct(filterBy) {
+  return await Product.deleteOne(filterBy)
+}
+
 module.exports = {
   createOneProduct,
   findOneProduct,
   findProducts,
   countProducts,
-  updateOneProduct
+  updateOneProduct,
+  deleteOneProduct
 }
