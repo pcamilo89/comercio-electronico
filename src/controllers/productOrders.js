@@ -1,5 +1,18 @@
 const { ResponseMessage } = require('../utils/message')
 const { HttpError } = require('../errors/HttpError')
+const { ProductOrderError } = require('../errors/ProductOrderError')
+const { createProductOrderValidation } = require('../validators/productOrder')
+const {
+  findProductsFromArray,
+  updateProductQuantityFromArray
+} = require('../services/product')
+const { createOneProductOrder } = require('../services/productOrder')
+const {
+  removeRepeats,
+  copyProductAtributes,
+  checkStock,
+  compareArrays
+} = require('../utils/productOrder')
 
 /**
  * Create a new product order with provided information.
@@ -7,10 +20,48 @@ const { HttpError } = require('../errors/HttpError')
  * @param {Response} res - Response object.
  */
 async function createProductOrder(req, res) {
-  const message = new ResponseMessage({
-    message: 'This is the create product order route.'
+  const { status, products } = req.body
+  const { _id: userId } = req.user
+
+  const { error } = createProductOrderValidation({
+    status,
+    products
   })
-  res.send(message)
+  if (error) {
+    throw new ProductOrderError({ httpStatusCode: 400, message: error.message })
+  }
+
+  let uniqueProducts = removeRepeats(products)
+  let stock = await findProductsFromArray(uniqueProducts)
+  stock = stock.filter((item) => item !== null)
+
+  compareArrays(uniqueProducts, stock)
+  uniqueProducts = copyProductAtributes(uniqueProducts, stock)
+  checkStock(uniqueProducts, stock)
+
+  const updateResult = await updateProductQuantityFromArray(
+    uniqueProducts,
+    stock
+  )
+  const allAcknowledged = updateResult.every((obj) => obj.acknowledged === true)
+  if (!allAcknowledged) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: 'Could not update all product quantities on database.'
+    })
+  }
+
+  const productOrder = await createOneProductOrder(
+    userId,
+    uniqueProducts,
+    status
+  )
+  if (productOrder) {
+    const message = new ResponseMessage({
+      message: `Product order "${productOrder._id}" has been created.`
+    })
+    res.send(message)
+  }
 }
 
 /**
