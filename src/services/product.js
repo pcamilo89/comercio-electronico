@@ -110,11 +110,28 @@ async function deleteOneProduct(filterBy) {
   }
 }
 
+/**
+ * Search all the Id in the provided array and return an array of Products.
+ * @param {[object]} products - Array of objects with _id to fetch from database.
+ * @returns {[object]} - Array of Products.
+ */
+async function findProductsFromArray(products) {
+  return await Promise.all(
+    products.map(async (product) => {
+      return findOneProduct(
+        { _id: product._id },
+        { name: 1, price: 1, quantity: 1 }
+      )
+    })
+  )
+}
+
 module.exports = {
   createOneProduct,
   findOneProduct,
   findProducts,
   countProducts,
   updateOneProduct,
-  deleteOneProduct
+  deleteOneProduct,
+  findProductsFromArray,
 }
