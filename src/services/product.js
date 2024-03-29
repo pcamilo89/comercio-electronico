@@ -1,6 +1,7 @@
-const Product = require('../models/product')
+const { Product } = require('../models/product')
 const { ProductError } = require('../errors/ProductError')
 const { DATABASE_ERROR } = require('../utils/constants')
+
 /**
  * Insert one product with the provided information in the database.
  * @param {string} name - Product name.

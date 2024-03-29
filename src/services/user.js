@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const { User } = require('../models/user')
 const { AuthError } = require('../errors/AuthError')
 const { DATABASE_ERROR } = require('../utils/constants')
 
@@ -34,4 +34,7 @@ async function findOneUser(filterBy, filterOut = undefined) {
   }
 }
 
-module.exports = { createOneUser, findOneUser }
+module.exports = {
+  createOneUser,
+  findOneUser
+}
