@@ -126,6 +126,26 @@ async function findProductsFromArray(products) {
   )
 }
 
+/**
+ * Update all products in the provided array.
+ * @param {[object]} products - Array of objects with _id and quantity to update.
+ * @param {[object]} stock - Array of objects with original values from database.
+ */
+async function updateProductQuantityFromArray(products, stock) {
+  return await Promise.all(
+    products.map(async (product, index) => {
+      const value = stock[index].quantity - product.quantity
+      try {
+        return await updateOneProduct({ _id: product._id }, { quantity: value })
+      } catch (CastError) {
+        throw new ProductError({
+          message: DATABASE_ERROR.CAST_ERROR
+        })
+      }
+    })
+  )
+}
+
 module.exports = {
   createOneProduct,
   findOneProduct,
@@ -134,4 +154,5 @@ module.exports = {
   updateOneProduct,
   deleteOneProduct,
   findProductsFromArray,
+  updateProductQuantityFromArray
 }
