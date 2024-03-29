@@ -11,8 +11,9 @@ const {
   updateProductOrder,
   deleteProductOrder
 } = require('../controllers/productOrders')
+const { authHandler } = require('../middlewares/authHandler')
 
-productOrdersRouter.post('/', createProductOrder)
+productOrdersRouter.post('/', authHandler, createProductOrder)
 productOrdersRouter.get('/', getProductOrders)
 productOrdersRouter.patch('/:id', updateProductOrder)
 productOrdersRouter.delete('/:id', deleteProductOrder)
