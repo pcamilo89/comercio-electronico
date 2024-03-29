@@ -32,4 +32,7 @@ const productSchema = Schema({
   }
 })
 
-module.exports = model('Product', productSchema)
+module.exports = {
+  Product: model('Product', productSchema),
+  productSchema
+}
