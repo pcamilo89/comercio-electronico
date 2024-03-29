@@ -3,7 +3,7 @@ const { ProductError } = require('../errors/ProductError')
 const { DATABASE_ERROR } = require('../utils/constants')
 
 /**
- * Insert one product with the provided information in the database.
+ * Create one product with the provided information in the database.
  * @param {string} name - Product name.
  * @param {string} description - Product description.
  * @param {number} price - Product price.
