@@ -51,7 +51,6 @@ async function createProduct(req, res) {
 
 /**
  * Get the products list.
- * TODO: add limit to constants or env
  * @param {Request} req - Request object.
  * @param {Response} res - Response object.
  */
@@ -63,7 +62,7 @@ async function getProducts(req, res) {
     page = Number(query.page)
   }
 
-  let limit = 10
+  let limit = Number(process.env.FIND_PAGE_LIMIT)
   if (query.limit) {
     limit = Number(query.limit)
   }
