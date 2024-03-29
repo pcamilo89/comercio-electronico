@@ -60,12 +60,12 @@ async function getProducts(req, res) {
 
   let page = 1
   if (query.page) {
-    page = query.page
+    page = Number(query.page)
   }
 
   let limit = 10
   if (query.limit) {
-    limit = query.limit
+    limit = Number(query.limit)
   }
 
   const count = await countProducts()
