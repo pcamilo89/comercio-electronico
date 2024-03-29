@@ -1,12 +1,14 @@
 const { ResponseMessage } = require('../utils/message')
-const { HttpError } = require('../errors/HttpError')
 const { ProductOrderError } = require('../errors/ProductOrderError')
 const { createProductOrderValidation } = require('../validators/productOrder')
 const {
   findProductsFromArray,
   updateProductQuantityFromArray
 } = require('../services/product')
-const { createOneProductOrder } = require('../services/productOrder')
+const {
+  createOneProductOrder,
+  findOneProductOrder
+} = require('../services/productOrder')
 const {
   removeRepeats,
   copyProductAtributes,
@@ -81,7 +83,7 @@ async function getProductOrders(req, res) {
   } else if (query.userid) {
     result = 'This is the get product orders list by userId route.'
   } else {
-    throw new HttpError({
+    throw new ProductOrderError({
       httpStatusCode: 400,
       message: 'The query parameter provided is invalid.'
     })
@@ -90,6 +92,27 @@ async function getProductOrders(req, res) {
   const message = new ResponseMessage({
     message: result
   })
+  res.send(message)
+}
+
+/**
+ * Get a product order with provided id.
+ * @param {Request} req - Request object.
+ * @param {Response} res - Response object.
+ */
+async function getProductOrderById(req, res) {
+  const { id } = req.params
+
+  const product = await findOneProductOrder({ _id: id })
+  if (!product) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: "Product order doesn't exist."
+    })
+  }
+
+  const message = new ResponseMessage()
+  message.product = product
   res.send(message)
 }
 
@@ -120,6 +143,7 @@ async function deleteProductOrder(req, res) {
 module.exports = {
   createProductOrder,
   getProductOrders,
+  getProductOrderById,
   updateProductOrder,
   deleteProductOrder
 }
