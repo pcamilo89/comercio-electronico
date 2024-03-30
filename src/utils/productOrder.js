@@ -19,7 +19,7 @@ function compareArrays(array1, array2) {
   const missingElement = array1.find((element) => !set2.has(element._id))
   if (missingElement) {
     throw new ProductOrderError({
-      message: 'One or more valid product id were not found.'
+      message: 'One or more product id were not found.'
     })
   }
 }
