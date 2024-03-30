@@ -7,7 +7,9 @@ const {
 } = require('../services/product')
 const {
   createOneProductOrder,
-  findOneProductOrder
+  findOneProductOrder,
+  countProductOrders,
+  findProductOrders
 } = require('../services/productOrder')
 const {
   removeRepeats,
@@ -68,30 +70,40 @@ async function createProductOrder(req, res) {
 
 /**
  * Get the product orders list.
- * TODO: Add productOrdersService method calls and proper responses
- * TODO: Change HttpError to a more Appropriate one
  * @param {Request} req - Request object.
  * @param {Response} res - Response object.
  */
 async function getProductOrders(req, res) {
   const { query } = req
-  let result = null
-  if (Object.keys(query).length === 0) {
-    result = 'This is the get all product orders list route.'
-  } else if (query.id) {
-    result = 'This is the get product orders list by Id route.'
-  } else if (query.userid) {
-    result = 'This is the get product orders list by userId route.'
-  } else {
-    throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: 'The query parameter provided is invalid.'
-    })
+
+  let page = 1
+  if (query.page) {
+    page = Number(query.page)
   }
 
-  const message = new ResponseMessage({
-    message: result
-  })
+  let limit = Number(process.env.FIND_PAGE_LIMIT)
+  if (query.limit) {
+    limit = Number(query.limit)
+  }
+
+  let count, productOrderList
+  if (query.userId) {
+    count = await countProductOrders({ userId: query.userId })
+    productOrderList = await findProductOrders({
+      filterBy: { userId: query.userId },
+      limit,
+      page
+    })
+  } else {
+    count = await countProductOrders()
+    productOrderList = await findProductOrders({ limit, page })
+  }
+
+  const message = new ResponseMessage()
+  message.products = productOrderList
+  message.count = count
+  message.limit = limit
+  message.page = page
   res.send(message)
 }
 
