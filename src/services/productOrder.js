@@ -34,7 +34,34 @@ async function findOneProductOrder(filterBy, filterOut = undefined) {
   }
 }
 
-async function findProductOrders() {}
+/**
+ * Search all product orders with the provided information in the database.
+ * @param {{ filterBy?: object; filterOut?: object; limit?: number; page?: number; }} object
+ * @param {object} [object.filterBy] - Filter search by any parameter specified or a combination.
+ * @param {object} [object.filterOut=undefined] - Filter out any parameter specified or a combination.
+ * @param {number} [object.limit] - Limit amount of results to be returned.
+ * @param {number} [object.page] - Page to be returned.
+ * @returns {Promise<object>}
+ */
+async function findProductOrders({
+  filterBy,
+  filterOut = undefined,
+  limit,
+  page
+}) {
+  const skip = (page - 1) * limit
+
+  try {
+    return await ProductOrder.find(filterBy, filterOut)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip)
+  } catch (CastError) {
+    throw new ProductOrderError({
+      message: DATABASE_ERROR.CAST_ERROR
+    })
+  }
+}
 
 module.exports = {
   createOneProductOrder,
