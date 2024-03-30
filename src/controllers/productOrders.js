@@ -9,7 +9,8 @@ const {
   createOneProductOrder,
   findOneProductOrder,
   countProductOrders,
-  findProductOrders
+  findProductOrders,
+  deleteOneProductOrder
 } = require('../services/productOrder')
 const {
   removeRepeats,
@@ -146,8 +147,14 @@ async function updateProductOrder(req, res) {
  * @param {Response} res - Response object.
  */
 async function deleteProductOrder(req, res) {
+  const { id } = req.params
+
+  const { deletedCount } = await deleteOneProductOrder({ _id: id })
+
   const message = new ResponseMessage({
-    message: 'This is the delete product order route.'
+    message: deletedCount
+      ? 'The product order with the provided id, was deleted.'
+      : 'The product order with the provided id, was not deleted.'
   })
   res.send(message)
 }
