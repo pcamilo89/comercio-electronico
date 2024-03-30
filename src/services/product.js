@@ -49,7 +49,10 @@ async function findProducts({ filterBy, filterOut = undefined, limit, page }) {
   const skip = (page - 1) * limit
 
   try {
-    return await Product.find(filterBy, filterOut).limit(limit).skip(skip)
+    return await Product.find(filterBy, filterOut)
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(skip)
   } catch (CastError) {
     throw new ProductError({
       message: DATABASE_ERROR.CAST_ERROR
