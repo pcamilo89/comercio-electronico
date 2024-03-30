@@ -63,8 +63,24 @@ async function findProductOrders({
   }
 }
 
+/**
+ * Count product orders with the provided information in the database.
+ * @param {object} filterBy - Find by any parameter of product or a combination.
+ * @returns {object} List of products if successful.
+ */
+async function countProductOrders(filterBy) {
+  try {
+    return await ProductOrder.countDocuments(filterBy)
+  } catch (CastError) {
+    throw new ProductOrderError({
+      message: DATABASE_ERROR.CAST_ERROR
+    })
+  }
+}
+
 module.exports = {
   createOneProductOrder,
   findOneProductOrder,
-  findProductOrders
+  findProductOrders,
+  countProductOrders
 }
