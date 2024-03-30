@@ -78,9 +78,25 @@ async function countProductOrders(filterBy) {
   }
 }
 
+/**
+ * Delete one product order with the provided information in the database.
+ * @param {object} filterBy - Find by any parameter of product or a combination.
+ * @returns {object} Status of the operation.
+ */
+async function deleteOneProductOrder(filterBy) {
+  try {
+    return await ProductOrder.deleteOne(filterBy)
+  } catch (CastError) {
+    throw new ProductOrderError({
+      message: DATABASE_ERROR.CAST_ERROR
+    })
+  }
+}
+
 module.exports = {
   createOneProductOrder,
   findOneProductOrder,
   findProductOrders,
-  countProductOrders
+  countProductOrders,
+  deleteOneProductOrder
 }
