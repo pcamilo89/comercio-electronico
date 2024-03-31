@@ -39,7 +39,7 @@ const productOrderSchema = Schema({
   status: {
     type: String,
     required: true,
-    enum: ['pending', 'approved', 'cancelled']
+    enum: ['pending', 'approved']
   },
   createdAt: {
     type: Date,
