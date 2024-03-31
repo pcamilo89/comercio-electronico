@@ -17,7 +17,7 @@ const { authHandler } = require('../middlewares/authHandler')
 productOrdersRouter.post('/', authHandler, createProductOrder)
 productOrdersRouter.get('/', getProductOrders)
 productOrdersRouter.get('/:id', getProductOrderById)
-productOrdersRouter.patch('/:id', updateProductOrder)
-productOrdersRouter.delete('/:id', deleteProductOrder)
+productOrdersRouter.patch('/:id', authHandler, updateProductOrder)
+productOrdersRouter.delete('/:id', authHandler, deleteProductOrder)
 
 module.exports = { productOrdersRouter }
