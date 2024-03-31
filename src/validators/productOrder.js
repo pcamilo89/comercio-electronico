@@ -14,8 +14,8 @@ function createProductOrderValidation({ status, products }) {
   })
   const schema = Joi.object({
     status: Joi.string()
-      .pattern(/^(pending|approved|cancelled)$/, {
-        name: 'pending|approved|cancelled'
+      .pattern(/^(pending|approved)$/, {
+        name: 'pending|approved'
       })
       .required(),
     products: Joi.array().items(product).min(1).required()
