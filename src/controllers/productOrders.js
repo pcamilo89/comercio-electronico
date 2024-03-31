@@ -3,7 +3,9 @@ const { ProductOrderError } = require('../errors/ProductOrderError')
 const { createProductOrderValidation } = require('../validators/productOrder')
 const {
   findProductsFromArray,
-  updateProductQuantityFromArray
+  updateProductQuantityFromArray,
+  findOneProduct,
+  updateOneProduct
 } = require('../services/product')
 const {
   createOneProductOrder,
@@ -16,7 +18,10 @@ const {
   removeRepeats,
   copyProductAtributes,
   checkStock,
-  compareArrays
+  compareArrays,
+  checkOwner,
+  NoMatchingElements,
+  hasZeroQuantity
 } = require('../utils/productOrder')
 
 /**
@@ -148,13 +153,46 @@ async function updateProductOrder(req, res) {
  */
 async function deleteProductOrder(req, res) {
   const { id } = req.params
+  const { _id: userId } = req.user
 
+  const productOrder = await findOneProductOrder({ _id: id })
+  if (!productOrder) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: "Product order doesn't exist."
+    })
+  }
+  checkOwner(productOrder.userId.toString(), userId)
+
+  if (productOrder.status === 'approved') {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: "Can't delete an approved product order."
+    })
+  }
+
+  let stock = await findProductsFromArray(productOrder.products)
+  stock = stock.filter((item) => item !== null)
+  checkStock(productOrder.products, stock)
+
+  const updateResult = await updateProductQuantityFromArray(
+    productOrder.products,
+    stock,
+    'increment'
+  )
+  const allAcknowledged = updateResult.every((obj) => obj.acknowledged === true)
+  if (!allAcknowledged) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: 'Could not update all product quantities on database.'
+    })
+  }
   const { deletedCount } = await deleteOneProductOrder({ _id: id })
 
   const message = new ResponseMessage({
     message: deletedCount
-      ? 'The product order with the provided id, was deleted.'
-      : 'The product order with the provided id, was not deleted.'
+      ? 'Product order deleted successfully.'
+      : 'Product order was not deleted.'
   })
   res.send(message)
 }
