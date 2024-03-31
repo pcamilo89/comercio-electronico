@@ -4,7 +4,6 @@ const { createProductOrderValidation } = require('../validators/productOrder')
 const {
   findProductsFromArray,
   updateProductQuantityFromArray,
-  findOneProduct,
   updateOneProduct
 } = require('../services/product')
 const {
@@ -214,9 +213,11 @@ async function updateProductOrder(req, res) {
         (product) => product._id.toString() === element._id
       )
       const current = productOrder.products[index]
-      const stock = await findOneProduct({ _id: current._id })
+      const stockItem = stock.find(
+        (obj) => current._id.toString() === obj._id.toString()
+      )
 
-      const value = stock.quantity + current.quantity
+      const value = stockItem.quantity + current.quantity
       const { acknowledged } = await updateOneProduct(
         { _id: current._id },
         { quantity: value }
