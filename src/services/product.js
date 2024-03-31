@@ -130,14 +130,30 @@ async function findProductsFromArray(products) {
 }
 
 /**
- * Update all products in the provided array.
+ * Update quantity of all products in the provided array.
  * @param {[object]} products - Array of objects with _id and quantity to update.
  * @param {[object]} stock - Array of objects with original values from database.
+ * @param {string} [option] - Can be either 'increment', 'decrement' or 'change'.
  */
-async function updateProductQuantityFromArray(products, stock) {
+async function updateProductQuantityFromArray(
+  products,
+  stock,
+  option = 'decrement'
+) {
   return await Promise.all(
     products.map(async (product, index) => {
-      const value = stock[index].quantity - product.quantity
+      const { quantity } = stock.find(
+        (element) => product._id.toString() === element._id.toString()
+      )
+      let value = 0
+      if (option === 'increment') {
+        value = quantity + product.quantity
+      } else if (option === 'decrement') {
+        value = quantity - product.quantity
+      } else if (option === 'change') {
+        value = product.quantity
+      }
+
       try {
         return await updateOneProduct({ _id: product._id }, { quantity: value })
       } catch (CastError) {
