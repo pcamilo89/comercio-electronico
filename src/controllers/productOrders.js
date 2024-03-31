@@ -140,8 +140,178 @@ async function getProductOrderById(req, res) {
  * @param {Response} res - Response object.
  */
 async function updateProductOrder(req, res) {
+  const { id } = req.params
+  const { _id: userId } = req.user
+  const { status, action, products } = req.body
+
+  const productOrder = await findOneProductOrder({ _id: id })
+  if (!productOrder) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: "Product order doesn't exist."
+    })
+  }
+  checkOwner(productOrder.userId.toString(), userId)
+
+  if (!(action && products) && !status) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: 'No information available to update product order.'
+    })
+  }
+
+  if ((action && !products) || (!action && products)) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: 'Both action and product must be present to update the order.'
+    })
+  }
+
+  if (status === 'approved' && status !== productOrder.status) {
+    productOrder.status = status
+    await productOrder.save()
+  } else if (productOrder.status === 'approved') {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: "Product order can't be modified if it's already approved."
+    })
+  }
+
+  let uniqueProducts
+  let stock
+
+  if (products) {
+    uniqueProducts = removeRepeats(products)
+    stock = await findProductsFromArray(uniqueProducts)
+    stock = stock.filter((item) => item !== null)
+    compareArrays(uniqueProducts, stock)
+    uniqueProducts = copyProductAtributes(uniqueProducts, stock)
+  }
+
+  if (action === 'remove') {
+    for (const element of uniqueProducts) {
+      const index = productOrder.products.findIndex(
+        (product) => product._id.toString() === element._id
+      )
+      if (index === -1) {
+        throw new ProductOrderError({
+          httpStatusCode: 400,
+          message: 'One or more products not found in product order.'
+        })
+      }
+    }
+
+    if (uniqueProducts.length === productOrder.products.length) {
+      throw new ProductOrderError({
+        httpStatusCode: 400,
+        message:
+          "Product order can't be empty, it needs to have at least one product left."
+      })
+    }
+
+    for (const element of uniqueProducts) {
+      const index = productOrder.products.findIndex(
+        (product) => product._id.toString() === element._id
+      )
+      const current = productOrder.products[index]
+      const stock = await findOneProduct({ _id: current._id })
+
+      const value = stock.quantity + current.quantity
+      const { acknowledged } = await updateOneProduct(
+        { _id: current._id },
+        { quantity: value }
+      )
+      if (acknowledged) productOrder.products.splice(index, 1)
+    }
+    await productOrder.save()
+  }
+
+  if (action === 'add') {
+    checkStock(uniqueProducts, stock)
+    if (!NoMatchingElements(uniqueProducts, productOrder.products)) {
+      throw new ProductOrderError({
+        httpStatusCode: 400,
+        message:
+          'Add action can only add new products, to modify change action.'
+      })
+    }
+
+    const updateResult = await updateProductQuantityFromArray(
+      uniqueProducts,
+      stock
+    )
+    const allAcknowledged = updateResult.every(
+      (obj) => obj.acknowledged === true
+    )
+    if (!allAcknowledged) {
+      throw new ProductOrderError({
+        httpStatusCode: 400,
+        message: 'Could not update all product quantities on database.'
+      })
+    }
+
+    for (const element of uniqueProducts) {
+      productOrder.products.push(element)
+    }
+    await productOrder.save()
+  }
+
+  if (action === 'modify') {
+    compareArrays(uniqueProducts, productOrder.products)
+    if (hasZeroQuantity(uniqueProducts)) {
+      throw new ProductOrderError({
+        httpStatusCode: 400,
+        message: "Product order can't have a product with 0 quantity."
+      })
+    }
+
+    const toAdd = []
+    const toRemove = []
+
+    for (const element of uniqueProducts) {
+      const orderIndex = productOrder.products.findIndex(
+        (product) => product._id.toString() === element._id
+      )
+
+      const tempObj = {
+        _id: element._id,
+        quantity: element.quantity - productOrder.products[orderIndex].quantity
+      }
+
+      if (element.quantity > productOrder.products[orderIndex].quantity) {
+        toAdd.push(tempObj)
+      } else if (
+        element.quantity < productOrder.products[orderIndex].quantity
+      ) {
+        toRemove.push(tempObj)
+      }
+    }
+    checkStock(toAdd, stock)
+    const toProcess = [...toAdd, ...toRemove]
+
+    const updateResult = await updateProductQuantityFromArray(toProcess, stock)
+    const allAcknowledged = updateResult.every(
+      (obj) => obj.acknowledged === true
+    )
+    if (!allAcknowledged) {
+      throw new ProductOrderError({
+        httpStatusCode: 400,
+        message: 'Could not update all product quantities on database.'
+      })
+    }
+
+    for (const element of toProcess) {
+      const index = productOrder.products.findIndex(
+        (product) => product._id.toString() === element._id
+      )
+      productOrder.products[index].quantity =
+        productOrder.products[index].quantity + element.quantity
+    }
+    await productOrder.save()
+  }
+
   const message = new ResponseMessage({
-    message: 'This is the update product order route.'
+    message: 'Product order updated successfully.'
   })
   res.send(message)
 }
