@@ -10,12 +10,12 @@ function removeRepeats(data) {
 }
 
 /**
- * Compare elements in first array if they exist in the second array.
+ * Compare if elements in first array exist in the second array.
  * @param {[object]} array1 - Array to be evaluated.
  * @param {[object]} array2 - Array to search for matches.
  */
 function compareArrays(array1, array2) {
-  const set2 = new Set(array2.map((obj) => obj._id))
+  const set2 = new Set(array2.map((obj) => obj._id.toString()))
   const missingElement = array1.find((element) => !set2.has(element._id))
   if (missingElement) {
     throw new ProductOrderError({
@@ -45,7 +45,10 @@ function copyProductAtributes(array1, array2) {
  */
 function checkStock(order, stock) {
   order.forEach((product, index) => {
-    if (product.quantity > stock[index].quantity) {
+    const element = stock.find(
+      (element) => product._id.toString() === element._id.toString()
+    )
+    if (product.quantity > element.quantity) {
       throw new ProductOrderError({
         message: `Not Enough stock of "${product._id}" to create the order.`
       })
@@ -53,9 +56,50 @@ function checkStock(order, stock) {
   })
 }
 
+/**
+ * Check if authenticated user is the owner of product order.
+ * @param {[object]} productUser - User id in the product order.
+ * @param {[object]} authUser - User id authenticated.
+ */
+function checkOwner(productUser, authUser) {
+  if (productUser !== authUser) {
+    throw new ProductOrderError({
+      httpStatusCode: 400,
+      message: 'You are not the owner of this product order.'
+    })
+  }
+}
+
+/**
+ * Check if all elements of the first array are not in the second array.
+ * @param {[object]} array1 - Array to be evaluated.
+ * @param {[object]} array2 - Array to search for matches.
+ * @returns {boolean} - True if no element is found in the second array.
+ */
+function NoMatchingElements(array1, array2) {
+  return array1.every(
+    (element1) =>
+      !array2.some(
+        (element2) => element1._id.toString() === element2._id.toString()
+      )
+  )
+}
+
+/**
+ * Check if any object in array has quantity value equal to 0.
+ * @param {[object]} array - Array to be evaluated.
+ * @returns {boolean} True if at least one quantity equal to 0.
+ */
+function hasZeroQuantity(array) {
+  return array.some((obj) => obj.quantity === 0)
+}
+
 module.exports = {
   removeRepeats,
   compareArrays,
   copyProductAtributes,
-  checkStock
+  checkStock,
+  checkOwner,
+  NoMatchingElements,
+  hasZeroQuantity
 }
