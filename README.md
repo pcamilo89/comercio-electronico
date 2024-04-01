@@ -1,5 +1,19 @@
 # Creacion de una API REST de comercio electrónico escalable con Nodejs, Express y MongoDB
 
+## Indice
+
+- [Configuracion Inicial](#configuracion-inicial)
+  - [MongoDB](#mongodb)
+  - [Variables de Entorno](#variables-de-entorno)
+  - [Node](#node)
+- [Referencia API](#referencia-api)
+  - [Mensajes de Error](#mensajes-de-error)
+  - [Autenticacion de Usuarios](#autenticacion-de-usuarios)
+  - [Manejo de Productos](#manejo-de-productos)
+  - [Manejo de Ordenes de productos](#manejo-de-ordenes-de-productos)
+- [Respaldo y Restauracion de Datos](#respaldo-y-restauracion-de-datos)
+- [Tecnologias Utilizadas y Decisiones de Diseño](#tecnologias-utilizadas-y-decisiones-de-diseño)
+
 ## Configuracion Inicial
 
 Configuración Inicial para poder utilizar este proyecto.
