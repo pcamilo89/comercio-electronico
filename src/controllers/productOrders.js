@@ -52,8 +52,7 @@ async function createProductOrder(req, res) {
     uniqueProducts,
     stock
   )
-  const allAcknowledged = updateResult.every((obj) => obj.acknowledged === true)
-  if (!allAcknowledged) {
+  if (!updateResult) {
     throw new ProductOrderError({
       message: 'Could not update all product quantities on database'
     })
@@ -231,10 +230,7 @@ async function updateProductOrder(req, res) {
       uniqueProducts,
       stock
     )
-    const allAcknowledged = updateResult.every(
-      (obj) => obj.acknowledged === true
-    )
-    if (!allAcknowledged) {
+    if (!updateResult) {
       throw new ProductOrderError({
         message: 'Could not update all product quantities on database'
       })
@@ -279,10 +275,7 @@ async function updateProductOrder(req, res) {
     const toProcess = [...toAdd, ...toRemove]
 
     const updateResult = await updateProductQuantityFromArray(toProcess, stock)
-    const allAcknowledged = updateResult.every(
-      (obj) => obj.acknowledged === true
-    )
-    if (!allAcknowledged) {
+    if (!updateResult) {
       throw new ProductOrderError({
         message: 'Could not update all product quantities on database'
       })
@@ -335,12 +328,12 @@ async function deleteProductOrder(req, res) {
     stock,
     'increment'
   )
-  const allAcknowledged = updateResult.every((obj) => obj.acknowledged === true)
-  if (!allAcknowledged) {
+  if (!updateResult) {
     throw new ProductOrderError({
       message: 'Could not update all product quantities on database'
     })
   }
+
   const { deletedCount } = await deleteOneProductOrder({ _id: id })
 
   const message = new ResponseMessage({

@@ -140,7 +140,7 @@ async function updateProductQuantityFromArray(
   stock,
   option = 'decrement'
 ) {
-  return await Promise.all(
+  const updateResult = await Promise.all(
     products.map(async (product, index) => {
       const { quantity } = stock.find(
         (element) => product._id.toString() === element._id.toString()
@@ -163,6 +163,8 @@ async function updateProductQuantityFromArray(
       }
     })
   )
+
+  return updateResult.every((obj) => obj.acknowledged === true)
 }
 
 module.exports = {
