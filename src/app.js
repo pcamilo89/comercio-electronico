@@ -12,7 +12,7 @@ const { mainRouter } = require('./routes/mainRouter')
  * @param {number} port - Port to listen to incoming request.
  */
 function startServer(port) {
-  console.log('Starting Server.')
+  console.log('Starting Server')
   app.use(cors())
   app.use(express.json())
 

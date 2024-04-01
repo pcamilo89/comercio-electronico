@@ -7,7 +7,7 @@ const { connect } = require('mongoose')
 async function connectToDB(dbUrl) {
   try {
     await connect(dbUrl)
-    console.log('Connected to DB.')
+    console.log('Connected to DB')
   } catch (error) {
     console.error(error)
   }

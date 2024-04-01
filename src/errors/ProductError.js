@@ -11,7 +11,7 @@ class ProductError extends HttpError {
    */
   constructor({
     httpStatusCode = 400,
-    message = 'Product related Error.',
+    message = 'Product related Error',
     hasStack = false
   } = {}) {
     super({ httpStatusCode, message, hasStack })

@@ -28,14 +28,13 @@ async function createProduct(req, res) {
     quantity
   })
   if (error) {
-    throw new ProductError({ httpStatusCode: 400, message: error.message })
+    throw new ProductError({ message: error.message })
   }
 
   const result = await findOneProduct({ name })
   if (result) {
     throw new ProductError({
-      httpStatusCode: 400,
-      message: 'Product already exists.'
+      message: 'Product already exists'
     })
   }
 
@@ -43,7 +42,7 @@ async function createProduct(req, res) {
   if (product) {
     res.send(
       new ResponseMessage({
-        message: `Product "${product.name}" has been created.`
+        message: `Product "${product.name}" has been created`
       })
     )
   }
@@ -90,8 +89,7 @@ async function getProductById(req, res) {
   const product = await findOneProduct({ _id: id })
   if (!product) {
     throw new ProductError({
-      httpStatusCode: 400,
-      message: "Product doesn't exist."
+      message: "Product doesn't exist"
     })
   }
 
@@ -116,7 +114,7 @@ async function updateProduct(req, res) {
     quantity
   })
   if (error) {
-    throw new ProductError({ httpStatusCode: 400, message: error.message })
+    throw new ProductError({ message: error.message })
   }
 
   const { modifiedCount } = await updateOneProduct(
@@ -126,8 +124,8 @@ async function updateProduct(req, res) {
 
   const message = new ResponseMessage({
     message: modifiedCount
-      ? 'The product with the provided id, was updated.'
-      : 'The product with the provided id, was not updated.'
+      ? 'The product with the provided id, was updated'
+      : 'The product with the provided id, was not updated'
   })
   res.send(message)
 }
@@ -144,8 +142,8 @@ async function deleteProduct(req, res) {
 
   const message = new ResponseMessage({
     message: deletedCount
-      ? 'The product with the provided id, was deleted.'
-      : 'The product with the provided id, was not deleted.'
+      ? 'The product with the provided id, was deleted'
+      : 'The product with the provided id, was not deleted'
   })
   res.send(message)
 }

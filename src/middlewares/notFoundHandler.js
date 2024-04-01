@@ -8,7 +8,7 @@ const { ResponseMessage } = require('../utils/message')
  */
 async function notFoundHandler(req, res, next) {
   const message = new ResponseMessage({
-    message: '404 Not Found.',
+    message: '404 Not Found',
     status: 'error'
   })
   res.status(404).send(message)

@@ -19,7 +19,7 @@ function compareArrays(array1, array2) {
   const missingElement = array1.find((element) => !set2.has(element._id))
   if (missingElement) {
     throw new ProductOrderError({
-      message: 'One or more product id were not found.'
+      message: 'One or more product id were not found in stock'
     })
   }
 }
@@ -50,7 +50,7 @@ function checkStock(order, stock) {
     )
     if (product.quantity > element.quantity) {
       throw new ProductOrderError({
-        message: `Not Enough stock of "${product._id}" to create the order.`
+        message: `Not Enough stock of "${product._id}" to create the order`
       })
     }
   })
@@ -64,8 +64,8 @@ function checkStock(order, stock) {
 function checkOwner(productUser, authUser) {
   if (productUser !== authUser) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: 'You are not the owner of this product order.'
+      httpStatusCode: 401,
+      message: 'You are not the owner of this product order'
     })
   }
 }

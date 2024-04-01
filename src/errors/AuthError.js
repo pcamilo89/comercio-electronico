@@ -11,7 +11,7 @@ class AuthError extends HttpError {
    */
   constructor({
     httpStatusCode = 400,
-    message = 'Authentication Error.',
+    message = 'Authentication Error',
     hasStack = false
   } = {}) {
     super({ httpStatusCode, message, hasStack })

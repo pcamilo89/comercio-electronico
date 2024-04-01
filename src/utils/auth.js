@@ -47,12 +47,12 @@ function verifyJWT(tokenString) {
     if (err.name === 'TokenExpiredError') {
       throw new AuthError({
         httpStatusCode: 401,
-        message: 'Access denied, access token has expired.'
+        message: 'Access denied, access token has expired'
       })
     } else {
       throw new AuthError({
         httpStatusCode: 401,
-        message: 'Access denied, access token validation failed.'
+        message: 'Access denied, access token validation failed'
       })
     }
   }
@@ -66,8 +66,8 @@ function verifyJWT(tokenString) {
 function hasJWT(header) {
   if (!header?.startsWith('Bearer ')) {
     throw new AuthError({
-      httpStatusCode: 400,
-      message: 'Access denied, access token not found.'
+      httpStatusCode: 401,
+      message: 'Access denied, access token not found'
     })
   }
   return header.split(' ')[1]

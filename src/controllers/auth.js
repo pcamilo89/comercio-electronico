@@ -14,14 +14,13 @@ async function register(req, res) {
 
   const { error } = registerValidation({ username, password, email })
   if (error) {
-    throw new AuthError({ httpStatusCode: 400, message: error.message })
+    throw new AuthError({ message: error.message })
   }
 
   const result = await findOneUser({ $or: [{ username }, { email }] })
   if (result) {
     throw new AuthError({
-      httpStatusCode: 400,
-      message: 'Username or Email aready exists.'
+      message: 'Username or Email aready exists'
     })
   }
 
@@ -30,7 +29,7 @@ async function register(req, res) {
   if (user) {
     res.send(
       new ResponseMessage({
-        message: `User "${user.username}" has been created.`
+        message: `User "${user.username}" has been created`
       })
     )
   }
@@ -46,27 +45,25 @@ async function login(req, res) {
 
   const { error } = loginValidation({ username, password })
   if (error) {
-    throw new AuthError({ httpStatusCode: 400, message: error.message })
+    throw new AuthError({ message: error.message })
   }
 
   const user = await findOneUser({ username })
   if (!user) {
     throw new AuthError({
-      httpStatusCode: 400,
-      message: "Username and password don't match, please try again."
+      message: "Username and password don't match, please try again"
     })
   }
 
   const match = await comparePasswords(password, user.password)
   if (!match) {
     throw new AuthError({
-      httpStatusCode: 400,
-      message: "Username and password don't match, please try again."
+      message: "Username and password don't match, please try again"
     })
   }
 
   const { _id } = user
-  const response = new ResponseMessage({ message: 'Login was successful.' })
+  const response = new ResponseMessage({ message: 'Login was successful' })
   response.token = createJWT({ _id, username })
   res.send(response)
 }

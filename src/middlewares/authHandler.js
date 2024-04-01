@@ -18,7 +18,7 @@ async function authHandler(req, res, next) {
   if (!user) {
     throw new AuthError({
       httpStatusCode: 401,
-      message: 'Access denied, access token validation failed.'
+      message: 'Access denied, access token validation failed'
     })
   }
 

@@ -37,7 +37,7 @@ async function createProductOrder(req, res) {
     products
   })
   if (error) {
-    throw new ProductOrderError({ httpStatusCode: 400, message: error.message })
+    throw new ProductOrderError({ message: error.message })
   }
 
   let uniqueProducts = removeRepeats(products)
@@ -55,8 +55,7 @@ async function createProductOrder(req, res) {
   const allAcknowledged = updateResult.every((obj) => obj.acknowledged === true)
   if (!allAcknowledged) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: 'Could not update all product quantities on database.'
+      message: 'Could not update all product quantities on database'
     })
   }
 
@@ -67,7 +66,7 @@ async function createProductOrder(req, res) {
   )
   if (productOrder) {
     const message = new ResponseMessage({
-      message: `Product order "${productOrder._id}" has been created.`
+      message: `Product order "${productOrder._id}" has been created`
     })
     res.send(message)
   }
@@ -123,8 +122,7 @@ async function getProductOrderById(req, res) {
   const product = await findOneProductOrder({ _id: id })
   if (!product) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: "Product order doesn't exist."
+      message: "Product order doesn't exist"
     })
   }
 
@@ -146,23 +144,20 @@ async function updateProductOrder(req, res) {
   const productOrder = await findOneProductOrder({ _id: id })
   if (!productOrder) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: "Product order doesn't exist."
+      message: "Product order doesn't exist"
     })
   }
   checkOwner(productOrder.userId.toString(), userId)
 
   if (!(action && products) && !status) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: 'No information available to update product order.'
+      message: 'No information available to update product order'
     })
   }
 
   if ((action && !products) || (!action && products)) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: 'Both action and product must be present to update the order.'
+      message: 'Both action and product must be present to update the order'
     })
   }
 
@@ -171,8 +166,7 @@ async function updateProductOrder(req, res) {
     await productOrder.save()
   } else if (productOrder.status === 'approved') {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: "Product order can't be modified if it's already approved."
+      message: "Product order can't be modified if it's already approved"
     })
   }
 
@@ -194,17 +188,15 @@ async function updateProductOrder(req, res) {
       )
       if (index === -1) {
         throw new ProductOrderError({
-          httpStatusCode: 400,
-          message: 'One or more products not found in product order.'
+          message: 'One or more products not found in product order'
         })
       }
     }
 
     if (uniqueProducts.length === productOrder.products.length) {
       throw new ProductOrderError({
-        httpStatusCode: 400,
         message:
-          "Product order can't be empty, it needs to have at least one product left."
+          "Product order can't be empty, it needs to have at least one product left"
       })
     }
 
@@ -231,9 +223,7 @@ async function updateProductOrder(req, res) {
     checkStock(uniqueProducts, stock)
     if (!NoMatchingElements(uniqueProducts, productOrder.products)) {
       throw new ProductOrderError({
-        httpStatusCode: 400,
-        message:
-          'Add action can only add new products, to modify change action.'
+        message: 'Add action can only add new products, to modify change action'
       })
     }
 
@@ -246,8 +236,7 @@ async function updateProductOrder(req, res) {
     )
     if (!allAcknowledged) {
       throw new ProductOrderError({
-        httpStatusCode: 400,
-        message: 'Could not update all product quantities on database.'
+        message: 'Could not update all product quantities on database'
       })
     }
 
@@ -261,8 +250,7 @@ async function updateProductOrder(req, res) {
     compareArrays(uniqueProducts, productOrder.products)
     if (hasZeroQuantity(uniqueProducts)) {
       throw new ProductOrderError({
-        httpStatusCode: 400,
-        message: "Product order can't have a product with 0 quantity."
+        message: "Product order can't have a product with 0 quantity"
       })
     }
 
@@ -296,8 +284,7 @@ async function updateProductOrder(req, res) {
     )
     if (!allAcknowledged) {
       throw new ProductOrderError({
-        httpStatusCode: 400,
-        message: 'Could not update all product quantities on database.'
+        message: 'Could not update all product quantities on database'
       })
     }
 
@@ -312,7 +299,7 @@ async function updateProductOrder(req, res) {
   }
 
   const message = new ResponseMessage({
-    message: 'Product order updated successfully.'
+    message: 'Product order updated successfully'
   })
   res.send(message)
 }
@@ -329,22 +316,19 @@ async function deleteProductOrder(req, res) {
   const productOrder = await findOneProductOrder({ _id: id })
   if (!productOrder) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: "Product order doesn't exist."
+      message: "Product order doesn't exist"
     })
   }
   checkOwner(productOrder.userId.toString(), userId)
 
   if (productOrder.status === 'approved') {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: "Can't delete an approved product order."
+      message: "Can't delete an approved product order"
     })
   }
 
   let stock = await findProductsFromArray(productOrder.products)
   stock = stock.filter((item) => item !== null)
-  checkStock(productOrder.products, stock)
 
   const updateResult = await updateProductQuantityFromArray(
     productOrder.products,
@@ -354,16 +338,15 @@ async function deleteProductOrder(req, res) {
   const allAcknowledged = updateResult.every((obj) => obj.acknowledged === true)
   if (!allAcknowledged) {
     throw new ProductOrderError({
-      httpStatusCode: 400,
-      message: 'Could not update all product quantities on database.'
+      message: 'Could not update all product quantities on database'
     })
   }
   const { deletedCount } = await deleteOneProductOrder({ _id: id })
 
   const message = new ResponseMessage({
     message: deletedCount
-      ? 'Product order deleted successfully.'
-      : 'Product order was not deleted.'
+      ? 'Product order deleted successfully'
+      : 'Product order was not deleted'
   })
   res.send(message)
 }

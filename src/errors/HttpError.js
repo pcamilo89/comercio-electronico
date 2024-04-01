@@ -9,7 +9,7 @@ class HttpError extends Error {
    */
   constructor({
     httpStatusCode = 500,
-    message = 'Internal Server Error.',
+    message = 'Internal Server Error',
     hasStack = false
   } = {}) {
     super(message)
