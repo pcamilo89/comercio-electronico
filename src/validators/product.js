@@ -13,8 +13,8 @@ function createProductValidation({ name, description, price, quantity }) {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
     description: Joi.string().min(3).required(),
-    price: Joi.number().min(0).required(),
-    quantity: Joi.number().min(0).required()
+    price: Joi.number().min(1).required(),
+    quantity: Joi.number().min(1).required()
   })
   return schema.validate({ name, description, price, quantity })
 }
@@ -32,8 +32,8 @@ function updateProductValidation({ name, description, price, quantity }) {
   const schema = Joi.object({
     name: Joi.string().min(3),
     description: Joi.string().min(3),
-    price: Joi.number().min(0),
-    quantity: Joi.number().min(0)
+    price: Joi.number().min(1),
+    quantity: Joi.number().min(1)
   }).min(1)
   return schema.validate({ name, description, price, quantity })
 }
