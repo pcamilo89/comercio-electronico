@@ -49,7 +49,7 @@ FIND_PAGE_LIMIT=<limit>
 
 Se asume que ya se tiene instalado Node y Git para poder proceder con la instalación.
 
-1.  Por la terminal se clona el repositorio de git con el comando:
+1.  Por la terminal se clona el repositorio de git con el comando: `git clone https://github.com/pcamilo89/comercio-electronico.git`
 2.  Se entra al directorio creado para el proyecto y se instalan las dependencias con el comando `npm install` o las alternativas en caso de usar `pnpm` o `yarn`.
 3.  Se configuran las variables de entorno especificadas en la sección [Variables de Entorno](#variables-de-entorno) en el archivo `.env` en la raíz del proyecto.
 4.  Se inicial el servidor con el comando `npm start`.
