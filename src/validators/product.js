@@ -6,7 +6,7 @@ const Joi = require('joi')
  * @param {string} object.name - Product name.
  * @param {string} object.description - Product description.
  * @param {number} object.price - Product price.
- * @param {number} object.quantity - Product quantity avaiable in stock.
+ * @param {number} object.quantity - Product quantity available in stock.
  * @returns {object} Validation result.
  */
 function createProductValidation({ name, description, price, quantity }) {
@@ -25,7 +25,7 @@ function createProductValidation({ name, description, price, quantity }) {
  * @param {string} [object.name] - Product name.
  * @param {string} [object.description] - Product description.
  * @param {number} [object.price] - Product price.
- * @param {number} [object.quantity] - Product quantity avaiable in stock.
+ * @param {number} [object.quantity] - Product quantity available in stock.
  * @returns {object} Validation result.
  */
 function updateProductValidation({ name, description, price, quantity }) {

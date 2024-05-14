@@ -1,4 +1,4 @@
-# Creacion de una API REST de comercio electrónico escalable con Nodejs, Express y MongoDB
+# API REST de comercio electrónico escalable con Nodejs, Express y MongoDB
 
 ## Indice
 
@@ -80,7 +80,9 @@ En caso de usar una versión de node menor el comando sera `nodemon ./src/app.js
 
 ### Mensajes de Error
 
-400 (Bad Request):
+<details>
+<summary> <b>400 (Bad Request)</b> </summary>
+</br>
 
 ```JSON
 {
@@ -90,7 +92,13 @@ En caso de usar una versión de node menor el comando sera `nodemon ./src/app.js
 }
 ```
 
-401 (Unauthorized):
+---
+
+</details>
+
+<details>
+<summary> <b>401 (Unauthorized)</b> </summary>
+</br>
 
 ```JSON
 {
@@ -103,7 +111,13 @@ En caso de usar una versión de node menor el comando sera `nodemon ./src/app.js
 - `Access denied, access token not found`
 - `Access denied, access token has expired`
 
-404 (Not Found):
+---
+
+</details>
+
+<details>
+<summary> <b>404 (Not Found)</b> </summary>
+</br>
 
 ```JSON
 {
@@ -113,9 +127,15 @@ En caso de usar una versión de node menor el comando sera `nodemon ./src/app.js
 }
 ```
 
+---
+
+</details>
+
 ### Autenticacion de Usuarios
 
-#### Registro de Usuario
+<details>
+<summary> <b>Registro de Usuario</b> </summary>
+</br>
 
 `POST /api/auth/register`
 
@@ -154,7 +174,13 @@ Error Messages:
 - 400 (Bad Request): `"email" is required`
 - 400 (Bad Request): `Username or Email aready exists`
 
-#### Inicio de Sesion
+---
+
+</details>
+
+<details>
+<summary> <b>Inicio de Sesion</b> </summary>
+</br>
 
 `POST /api/auth/login`
 
@@ -191,9 +217,15 @@ Error Messages:
 - 400 (Bad Request): `"password" is required`
 - 400 (Bad Request): `Username and password don't match, please try again`
 
+---
+
+</details>
+
 ### Manejo de Productos
 
-#### Agregar Producto
+<details>
+<summary> <b>Agregar Producto</b> </summary>
+</br>
 
 `POST /api/products`
 
@@ -235,7 +267,13 @@ Error Messages:
 - 400 (Bad Request): `"price" must be a number`
 - 400 (Bad Request): `Product already exists`
 
-#### Ver Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Ver Producto</b> </summary>
+</br>
 
 `GET /api/products/:id`
 
@@ -274,7 +312,13 @@ Error Messages:
 - 400 (Bad Request): `Could not find a match with provided information`
 - 400 (Bad Request): `Product doesn't exist`
 
-#### Ver Lista de Productos
+---
+
+</details>
+
+<details>
+<summary> <b>Ver Lista de Productos</b> </summary>
+</br>
 
 `GET /api/products`
 
@@ -323,7 +367,13 @@ Ejemplo:
 }
 ```
 
-#### Editar Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Editar Producto</b> </summary>
+</br>
 
 `PATCH /api/products/:id`
 
@@ -376,7 +426,13 @@ Error Messages:
 - 400 (Bad Request): `"price" must be greater than or equal to 1`
 - 400 (Bad Request): `"price" must be a number`
 
-#### Eliminar Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Eliminar Producto</b> </summary>
+</br>
 
 `DELETE /api/products/:id`
 
@@ -408,9 +464,15 @@ Error Messages:
 - 400 (Bad Request): `Product doesn't exist`
 - 400 (Bad Request): `The product with the provided id, was not deleted`
 
+---
+
+</details>
+
 ### Manejo de Ordenes de productos
 
-#### Agregar Orden de Producto
+<details>
+<summary> <b>Agregar Orden de Producto</b> </summary>
+</br>
 
 `POST /api/product-orders`
 
@@ -469,7 +531,13 @@ Error Messages:
 - 400 (Bad Request): `One or more product id were not found in stock`
 - 400 (Bad Request): `Not Enough stock of "661463f75969ce6f6fbb2e9e" to create the order`
 
-#### Ver Orden de Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Ver Orden de Producto</b> </summary>
+</br>
 
 `GET /api/product-orders/:id`
 
@@ -514,7 +582,13 @@ Error Messages:
 - 400 (Bad Request): `Product order doesn't exist`
 - 400 (Bad Request): `Could not find a match with provided information`
 
-#### Ver Lista de Ordenes de Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Ver Lista de Ordenes de Producto</b> </summary>
+</br>
 
 `GET /api/product-orders`
 
@@ -582,7 +656,13 @@ Ejemplo:
 }
 ```
 
-#### Editar Orden de Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Editar Orden de Producto</b> </summary>
+</br>
 
 `PATCH /api/product-orders/:id`
 
@@ -658,7 +738,13 @@ Error Messages:
 - 400 (Bad Request): `Product order doesn't exist`
 - 400 (Bad Request): `You are not the owner of this product order`
 
-#### Eliminar Orden de Producto
+---
+
+</details>
+
+<details>
+<summary> <b>Eliminar Orden de Producto</b> </summary>
+</br>
 
 `PATCH /api/product-orders/:id`
 
@@ -701,11 +787,17 @@ Error Messages:
 - 400 (Bad Request): `Can't delete an approved product order`
 - 400 (Bad Request): `You are not the owner of this product order`
 
+---
+
+</details>
+
 ## Respaldo y Restauracion de Datos
 
 Para realizar respaldos y restauración de los datos almacenados en la base de datos, existen varias alternativas, entre las que se encuentran varias utilidades en la terminal que vienen en conjunto con `MongoDB`, a continuación explicaremos como utilizarlas.
 
-### mongodump
+<details>
+<summary> <b>mongodump</b> </summary>
+</br>
 
 Es una herramienta que crea una copia binaria del contenido de una base de datos.
 
@@ -724,7 +816,13 @@ Comando:
 mongodump --host=<url-or-ip>:<port> --authenticationDatabase admin -u="<user>" --db=<db-name> --archive=<filename>
 ```
 
-### mongorestore
+---
+
+</details>
+
+<details>
+<summary> <b>mongorestore</b> </summary>
+</br>
 
 Es una herramienta que carga la data binaria generada por `mongodump` y la agrega a la base de datos.
 
@@ -743,7 +841,13 @@ Comando:
 mongorestore --host=<url-or-ip>:<port> --authenticationDatabase admin -u="<user>" --archive=<filename>
 ```
 
-### mongoexport
+---
+
+</details>
+
+<details>
+<summary> <b>mongoexport</b> </summary>
+</br>
 
 Es una herramienta que crea una copia en formato JSON o CSV del contenido de una base de datos.
 
@@ -762,7 +866,13 @@ Comando:
 mongoexport --host=<url-or-ip>:<port> --authenticationDatabase admin -u="<user>" --db=<db-name> --collection=<name> --out=out.json
 ```
 
-### mongoimport
+---
+
+</details>
+
+<details>
+<summary> <b>mongoimport</b> </summary>
+</br>
 
 Es una herramienta que carga la data en formato JSON o CSV generada por `mongoexport` y la agrega a la base de datos.
 
@@ -781,6 +891,10 @@ Comando:
 ```TEXT
 mongoexport --host=<url-or-ip>:<port> --authenticationDatabase admin -u="<user>" --db=<db-name> --collection=<name> --file=<filename>
 ```
+
+---
+
+</details>
 
 ## Tecnologias Utilizadas y Decisiones de Diseño
 
@@ -804,7 +918,7 @@ Se utiliza ESLint, para hacer cumplir estándares de estilo de código (JavaScri
 - `Bcryptjs`: Librería para manejo seguro de contraseñas, que utiliza encriptación de un solo sentido.
 - `jsonwebtoken`: Para el manejo autenticación segura con JWT, incluyendo la creación, lectura y verificación de tokens en una API stateless.
 - `cors`: Para el manejo y limitación de acceso de los recursos compartidos entre dominios.
-- `Thunder Client` Para hacer peticiones de prueba a la API ya que esta integrado en VSCode y permite exportar en formato simple una coleccion con un conjunto de rutas.
+- `Thunder Client`: Para hacer peticiones de prueba a la API ya que esta integrado en VSCode y permite exportar en formato simple una coleccion con un conjunto de rutas.
 
 ### Otras Consideraciones
 

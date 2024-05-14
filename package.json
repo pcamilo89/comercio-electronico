@@ -1,8 +1,8 @@
 {
   "name": "comercio-electronico",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "./src/app.js",
   "scripts": {
     "start": "node --watch-path=./src --env-file=.env ./src/app.js",
     "lint": "eslint ./src",

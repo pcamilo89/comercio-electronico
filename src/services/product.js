@@ -7,7 +7,7 @@ const { DATABASE_ERROR } = require('../utils/constants')
  * @param {string} name - Product name.
  * @param {string} description - Product description.
  * @param {number} price - Product price.
- * @param {number} quantity - Product quantity avaiable in stock.
+ * @param {number} quantity - Product quantity available in stock.
  * @returns {object} Product if successful.
  */
 async function createOneProduct(name, description, price, quantity) {

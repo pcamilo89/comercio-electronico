@@ -25,12 +25,12 @@ function compareArrays(array1, array2) {
 }
 
 /**
- * Copy missing product atributes to first array from second array.
+ * Copy missing product attributes to first array from second array.
  * @param {[object]} array1 - Array to copy to.
  * @param {[object]} array2 - Array to copy from.
- * @returns {[object]} Array with atributes copied.
+ * @returns {[object]} Array with attributes copied.
  */
-function copyProductAtributes(array1, array2) {
+function copyProductAttributes(array1, array2) {
   return array1.map((element1, index) => {
     element1.name = array2[index].name
     element1.price = array2[index].price
@@ -97,7 +97,7 @@ function hasZeroQuantity(array) {
 module.exports = {
   removeRepeats,
   compareArrays,
-  copyProductAtributes,
+  copyProductAttributes,
   checkStock,
   checkOwner,
   NoMatchingElements,
