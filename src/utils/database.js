@@ -1,7 +1,7 @@
 const { connect } = require('mongoose')
 
 /**
- * Function to stablish a conection with the database.
+ * Function to stablish a connection with the database.
  * @param {string} dbUrl - URL to stablish a connection to.
  */
 async function connectToDB(dbUrl) {

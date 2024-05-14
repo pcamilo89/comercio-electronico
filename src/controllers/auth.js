@@ -20,7 +20,7 @@ async function register(req, res) {
   const result = await findOneUser({ $or: [{ username }, { email }] })
   if (result) {
     throw new AuthError({
-      message: 'Username or Email aready exists'
+      message: 'Username or Email already exists'
     })
   }
 

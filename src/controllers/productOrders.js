@@ -15,7 +15,7 @@ const {
 } = require('../services/productOrder')
 const {
   removeRepeats,
-  copyProductAtributes,
+  copyProductAttributes,
   checkStock,
   compareArrays,
   checkOwner,
@@ -45,7 +45,7 @@ async function createProductOrder(req, res) {
   stock = stock.filter((item) => item !== null)
 
   compareArrays(uniqueProducts, stock)
-  uniqueProducts = copyProductAtributes(uniqueProducts, stock)
+  uniqueProducts = copyProductAttributes(uniqueProducts, stock)
   checkStock(uniqueProducts, stock)
 
   const updateResult = await updateProductQuantityFromArray(
@@ -177,7 +177,7 @@ async function updateProductOrder(req, res) {
     stock = await findProductsFromArray(uniqueProducts)
     stock = stock.filter((item) => item !== null)
     compareArrays(uniqueProducts, stock)
-    uniqueProducts = copyProductAtributes(uniqueProducts, stock)
+    uniqueProducts = copyProductAttributes(uniqueProducts, stock)
   }
 
   if (action === 'remove') {
